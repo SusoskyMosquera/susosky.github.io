@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>root@susosky:~/portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"Fira Code"', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#0a0a0a',
+                        termGreen: '#22c55e',
+                        termPurple: '#d8b4fe',
+                        termDim: '#4b5563',
+                        termBlue: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        /* Scrollbar aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="text-termGreen font-mono antialiased min-h-screen p-4 md:p-12 selection:bg-termPurple selection:text-black">
+
+    <div class="max-w-5xl mx-auto border border-gray-800 bg-black shadow-2xl rounded-sm p-2 md:p-6">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-6">
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500 opacity-50"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500 opacity-50"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500 opacity-50"></div>
+            </div>
+            <div class="text-termDim text-xs">user: susosky — -zsh — 80x24</div>
+        </div>
+
+        <header class="mb-12">
+            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <span class="text-termPurple font-bold">root@susosky:~$</span>
+                <span class="typing-effect text-white">./display_profile.sh --verbose</span>
+            </div>
+            
+            <div class="border-l-2 border-termPurple pl-4 ml-2 my-4">
+                <h1 class="text-3xl md:text-5xl font-bold text-white mb-2">JUAN FELIPE GONZALEZ</h1>
+                <h2 class="text-xl md:text-2xl text-termDim">Backend Engineer | Architecture & CI/CD</h2>
+            </div>
+
+            <p class="text-gray-400 mt-4 max-w-2xl">
+                <span class="text-blue-400">INFO:</span> Initializing environment...<br>
+                <span class="text-blue-400">INFO:</span> Loading Python stack... <span class="text-green-500">OK</span><br>
+                <span class="text-blue-400">INFO:</span> Establishing database connection... <span class="text-green-500">OK</span><br>
+                <span class="text-blue-400">INFO:</span> CI/CD Pipelines... <span class="text-green-500">Active</span>
+            </p>
+        </header>
+
+        <nav class="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <a href="#about" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./01_about.json ]</a>
+            <a href="#experience" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./02_experience.log ]</a>
+            <a href="#skills" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./03_stack.yml ]</a>
+            <a href="#contact" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./04_contact.sh ]</a>
+        </nav>
+
+        <section id="about" class="mb-16">
+            <div class="text-termPurple mb-2 font-bold">root@susosky:~/about$ <span class="text-white">cat profile.json</span></div>
+            <div class="bg-[#0f0f0f] p-4 md:p-6 border-l-4 border-gray-700 text-gray-300 text-sm md:text-base overflow-x-auto">
+<pre>{
+  "role": "Backend Engineer",
+  "focus": ["Scalability", "Security", "Automation"],
+  "mission": "Bridging development and operations with Docker & Jenkins.",
+  "bio": "Backend Engineer focused on designing scalable architectures. I transition complex business requirements into production-ready systems using Python (Django/FastAPI) and PostgreSQL.",
+  "status": "Open to backend-focused opportunities."
+}</pre>
+            </div>
+        </section>
+
+        <section id="experience" class="mb-16">
+            <div class="text-termPurple mb-4 font-bold">root@susosky:~/experience$ <span class="text-white">tail -f career.log</span></div>
+            
+            <div class="space-y-8 border-l border-gray-800 pl-6 ml-2">
+                
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-0 w-3 h-3 bg-termGreen rounded-full"></div>
+                    <div class="text-white font-bold text-lg">CORMACARENA <span class="text-termDim text-sm font-normal">| Backend Developer</span></div>
+                    <div class="text-termDim text-xs mb-2">Sep 2025 - Present | Meta, Colombia</div>
+                    <ul class="list-none space-y-1 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Engineered CI/CD pipelines using <span class="text-white">Jenkins</span> & <span class="text-white">Docker</span>.</li>
+                        <li><span class="text-termPurple">>></span> Managed Linux/Nginx infrastructure for high availability.</li>
+                        <li><span class="text-termPurple">>></span> Maintained clean architecture in <span class="text-white">Django REST Framework</span> APIs.</li>
+                    </ul>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-0 w-3 h-3 bg-termPurple rounded-full"></div>
+                    <div class="text-white font-bold text-lg">GOBERNACIÓN DEL META <span class="text-termDim text-sm font-normal">| Backend Intern</span></div>
+                    <div class="text-termDim text-xs mb-2">Nov 2025 - Present | Hybrid</div>
+                    <ul class="list-none space-y-1 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Architected "Sistema de Información de Emprendedores".</li>
+                        <li><span class="text-termPurple">>></span> Designed normalized <span class="text-white">PostgreSQL</span> schemas from scratch.</li>
+                        <li><span class="text-termPurple">>></span> Secured sensitive PII & financial metrics.</li>
+                    </ul>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-0 w-3 h-3 bg-gray-600 rounded-full"></div>
+                    <div class="text-white font-bold text-lg">UNIVERSIDAD DE LOS LLANOS <span class="text-termDim text-sm font-normal">| Teaching Assistant</span></div>
+                    <div class="text-termDim text-xs mb-2">Feb 2023 - July 2025</div>
+                    <ul class="list-none space-y-1 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Academic support in <span class="text-white">Linear Algebra</span> & <span class="text-white">Stochastic Processes</span>.</li>
+                        <li><span class="text-termPurple">>></span> Mentored 120+ students in mathematical foundations for AI.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="mb-16">
+            <div class="text-termPurple mb-2 font-bold">root@susosky:~/skills$ <span class="text-white">cat stack.yml</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-[#0f0f0f] p-4 border border-gray-800">
+                    <h3 class="text-white border-b border-gray-700 pb-2 mb-2">Backend_Core:</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>- Python (Django, FastAPI)</li>
+                        <li>- PostgreSQL (Complex Queries)</li>
+                        <li>- REST API Design</li>
+                        <li>- Clean Architecture</li>
+                    </ul>
+                </div>
+                <div class="bg-[#0f0f0f] p-4 border border-gray-800">
+                    <h3 class="text-white border-b border-gray-700 pb-2 mb-2">DevOps_Infra:</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>- Docker & Compose</li>
+                        <li>- Jenkins (CI/CD)</li>
+                        <li>- Linux Administration</li>
+                        <li>- Nginx & SSH</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="mb-12">
+            <div class="text-termPurple mb-4 font-bold">root@susosky:~$ <span class="text-white">./contact_me.sh</span></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="mailto:juan.gonzalez.mosquera@unillanos.edu.co" class="group block border border-gray-800 p-6 hover:border-termGreen transition-colors bg-[#0a0a0a]">
+                    <div class="text-xs text-termDim mb-1">Method: SMTP</div>
+                    <div class="text-white font-bold group-hover:text-termGreen break-words">juan.gonzalez.mosquera@unillanos.edu.co</div>
+                </a>
+
+                <a href="https://www.linkedin.com/in/susosky/" target="_blank" class="group block border border-gray-800 p-6 hover:border-blue-500 transition-colors bg-[#0a0a0a]">
+                    <div class="text-xs text-termDim mb-1">Method: HTTP/GET</div>
+                    <div class="text-white font-bold group-hover:text-blue-500">linkedin.com/in/susosky</div>
+                </a>
+            </div>
+        </section>
+
+        <footer class="border-t border-gray-800 pt-6 flex justify-between text-xs text-termDim">
+            <div>
+                <span class="text-green-900">●</span> System Online
+            </div>
+            <div>
+                Built with <span class="text-gray-500">&lt;HTML/&gt;</span> & <span class="text-gray-500">Tailwind</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("System initialized.");
+        });
+    </script>
+</body>
+</html>
