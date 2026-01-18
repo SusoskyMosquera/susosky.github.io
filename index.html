@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>root@susosky:~/portfolio</title>
+    <title>root@susoskymosquera:~/portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        mono: ['"Fira Code"', 'monospace'],
-                    },
+                    fontFamily: { mono: ['"Fira Code"', 'monospace'] },
                     colors: {
-                        bg: '#0a0a0a',
+                        bg: '#050505',
                         termGreen: '#22c55e',
                         termPurple: '#d8b4fe',
                         termDim: '#4b5563',
+                        termRed: '#ef4444',
                         termBlue: '#3b82f6'
                     }
                 }
@@ -28,78 +27,116 @@
         body { background-color: #050505; }
         .cursor-blink { animation: blink 1s step-end infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        /* Scrollbar aesthetics */
+        body.booting { overflow: hidden; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        /* Language Toggle System */
+        .lang-es { display: none; }
+        body.spanish-mode .lang-en { display: none; }
+        body.spanish-mode .lang-es { display: contents; }
+        
+        /* Block level overrides */
+        body.spanish-mode div.lang-es, 
+        body.spanish-mode ul.lang-es,
+        body.spanish-mode p.lang-es,
+        body.spanish-mode pre.lang-es { display: block; }
     </style>
 </head>
-<body class="text-termGreen font-mono antialiased min-h-screen p-4 md:p-12 selection:bg-termPurple selection:text-black">
+<body class="text-termGreen font-mono antialiased min-h-screen p-4 md:p-12 selection:bg-termPurple selection:text-black booting">
 
-    <div class="max-w-5xl mx-auto border border-gray-800 bg-black shadow-2xl rounded-sm p-2 md:p-6">
+    <div id="boot-screen" class="fixed inset-0 bg-black z-50 p-6 overflow-hidden flex flex-col justify-end">
+        <div id="boot-logs" class="text-gray-400 text-sm md:text-base font-mono space-y-1"></div>
+    </div>
+
+    <div id="main-ui" class="opacity-0 transition-opacity duration-1000 max-w-6xl mx-auto border border-gray-800 bg-black shadow-2xl rounded-sm p-2 md:p-6">
         
         <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-6">
             <div class="flex gap-2">
-                <div class="w-3 h-3 rounded-full bg-red-500 opacity-50"></div>
+                <div class="w-3 h-3 rounded-full bg-termRed opacity-50"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-500 opacity-50"></div>
                 <div class="w-3 h-3 rounded-full bg-green-500 opacity-50"></div>
             </div>
-            <div class="text-termDim text-xs">user: susosky — -zsh — 80x24</div>
+            <div class="flex items-center gap-4">
+                <div class="text-termDim text-xs hidden md:block">user: susoskymosquera — -zsh — 80x24</div>
+                <button id="lang-btn" class="text-xs border border-gray-700 px-2 py-0.5 text-gray-400 hover:text-white hover:border-termGreen transition-colors uppercase">
+                    [ <span class="text-termGreen font-bold">EN</span> / ES ]
+                </button>
+            </div>
         </div>
 
         <header class="mb-12">
-            <div class="flex flex-col md:flex-row gap-4 mb-4">
-                <span class="text-termPurple font-bold">root@susosky:~$</span>
-                <span class="typing-effect text-white">./display_profile.sh --verbose</span>
+            <div class="flex flex-col md:flex-row gap-4 mb-4 items-start md:items-center">
+                <span class="text-termPurple font-bold whitespace-nowrap">root@susoskymosquera:~$</span>
+                <span id="typewriter-command" class="text-white"></span><span class="cursor-blink bg-white w-2 h-5 inline-block align-middle ml-1"></span>
+            </div>
+            
+            <div class="overflow-x-auto pb-2 mb-4 opacity-80 text-xs md:text-sm text-termGreen leading-none hidden md:block">
+<pre>
+███████╗███████╗██╗     ██╗██████╗ ███████╗    ███╗   ███╗
+██╔════╝██╔════╝██║     ██║██╔══██╗██╔════╝    ████╗ ████║
+█████╗  █████╗  ██║     ██║██████╔╝█████╗      ██╔████╔██║
+██╔══╝  ██╔══╝  ██║     ██║██╔═══╝ ██╔══╝      ██║╚██╔╝██║
+██║     ███████╗███████╗██║██║     ███████╗    ██║ ╚═╝ ██║
+╚═╝     ╚══════╝╚══════╝╚═╝╚═╝     ╚══════╝    ╚═╝     ╚═╝
+</pre>
             </div>
             
             <div class="border-l-2 border-termPurple pl-4 ml-2 my-4">
                 <h1 class="text-3xl md:text-5xl font-bold text-white mb-2">FELIPE MOSQUERA</h1>
-                <h2 class="text-xl md:text-2xl text-termDim">Backend Engineer | Architecture & CI/CD</h2>
+                <h2 class="text-xl md:text-2xl text-termDim">
+                    <span class="lang-en">Backend Engineer | Architecture & CI/CD</span>
+                    <span class="lang-es">Ingeniero Backend | Arquitectura y CI/CD</span>
+                </h2>
             </div>
-
-            <p class="text-gray-400 mt-4 max-w-2xl">
-                <span class="text-blue-400">INFO:</span> Initializing environment...<br>
-                <span class="text-blue-400">INFO:</span> Loading Python stack... <span class="text-green-500">OK</span><br>
-                <span class="text-blue-400">INFO:</span> Establishing database connection... <span class="text-green-500">OK</span><br>
-                <span class="text-blue-400">INFO:</span> CI/CD Pipelines... <span class="text-green-500">Active</span>
-            </p>
         </header>
 
-        <nav class="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <a href="#about" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./01_about.json ]</a>
-            <a href="#experience" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./02_experience.log ]</a>
-            <a href="#skills" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./03_stack.yml ]</a>
-            <a href="#contact" class="hover:bg-termPurple hover:text-black px-2 py-1 transition-colors border border-gray-800 text-center">[ ./04_contact.sh ]</a>
+        <nav class="mb-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm">
+            <a href="#about" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./about ]</a>
+            <a href="#experience" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./exp.log ]</a>
+            <a href="#projects" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./proj.py ]</a>
+            <a href="#certs" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./certs.pem ]</a>
+            <a href="#skills" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./stack.yml ]</a>
+            <a href="#contact" class="hover:bg-termPurple hover:text-black px-2 py-1 border border-gray-800 text-center transition-colors">[ ./contact ]</a>
         </nav>
 
         <section id="about" class="mb-16">
-            <div class="text-termPurple mb-2 font-bold">root@susosky:~/about$ <span class="text-white">cat profile.json</span></div>
+            <div class="text-termPurple mb-2 font-bold">root@susoskymosquera:~/about$ <span class="text-white">cat profile.json</span></div>
             <div class="bg-[#0f0f0f] p-4 md:p-6 border-l-4 border-gray-700 text-gray-300 text-sm md:text-base overflow-x-auto">
-<pre>{
+<pre class="lang-en">{
   "role": "Backend Engineer",
   "focus": ["Scalability", "Security", "Automation"],
   "mission": "Bridging development and operations with Docker & Jenkins.",
-  "bio": "Backend Engineer focused on designing scalable architectures. I transition complex business requirements into production-ready systems using Python (Django/FastAPI) and PostgreSQL.",
-  "status": "Open to backend-focused opportunities."
+  "bio": "Backend Engineer focused on designing scalable architectures. I transition complex business requirements into production-ready systems using Python (Django/FastAPI) and PostgreSQL."
+}</pre>
+<pre class="lang-es">{
+  "rol": "Ingeniero Backend",
+  "enfoque": ["Escalabilidad", "Seguridad", "Automatización"],
+  "mision": "Uniendo desarrollo y operaciones con Docker y Jenkins.",
+  "bio": "Ingeniero Backend enfocado en arquitecturas escalables. Transformo requerimientos de negocio complejos en sistemas listos para producción usando Python (Django/FastAPI) y PostgreSQL."
 }</pre>
             </div>
         </section>
 
         <section id="experience" class="mb-16">
-            <div class="text-termPurple mb-4 font-bold">root@susosky:~/experience$ <span class="text-white">tail -f career.log</span></div>
-            
+            <div class="text-termPurple mb-4 font-bold">root@susoskymosquera:~/experience$ <span class="text-white">tail -f career.log</span></div>
             <div class="space-y-8 border-l border-gray-800 pl-6 ml-2">
                 
                 <div class="relative">
                     <div class="absolute -left-[31px] top-0 w-3 h-3 bg-termGreen rounded-full"></div>
                     <div class="text-white font-bold text-lg">CORMACARENA <span class="text-termDim text-sm font-normal">| Backend Developer</span></div>
                     <div class="text-termDim text-xs mb-2">Sep 2025 - Present | Meta, Colombia</div>
-                    <ul class="list-none space-y-1 text-gray-400 text-sm">
-                        <li><span class="text-termPurple">>></span> Engineered CI/CD pipelines using <span class="text-white">Jenkins</span> & <span class="text-white">Docker</span>.</li>
-                        <li><span class="text-termPurple">>></span> Managed Linux/Nginx infrastructure for high availability.</li>
-                        <li><span class="text-termPurple">>></span> Maintained clean architecture in <span class="text-white">Django REST Framework</span> APIs.</li>
+                    
+                    <ul class="lang-en list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Developing scalable microservices using <span class="text-white">Python</span> and <span class="text-white">Django REST Framework</span>, integrating directly with automated CI/CD pipelines via <span class="text-white">Jenkins</span>.</li>
+                        <li><span class="text-termPurple">>></span> Containerizing Python applications with <span class="text-white">Docker</span> and managing production deployments on Linux servers using <span class="text-white">Nginx</span> reverse proxies.</li>
+                        <li><span class="text-termPurple">>></span> Optimizing database queries and backend workflows managed in <span class="text-white">Jira</span>, ensuring high performance and clean code architecture.</li>
+                    </ul>
+                    <ul class="lang-es list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Desarrollando microservicios escalables con <span class="text-white">Python</span> y <span class="text-white">Django REST Framework</span>, integrados en pipelines CI/CD automatizados vía <span class="text-white">Jenkins</span>.</li>
+                        <li><span class="text-termPurple">>></span> Containerizando aplicaciones con <span class="text-white">Docker</span> y gestionando despliegues en producción sobre servidores Linux usando <span class="text-white">Nginx</span>.</li>
+                        <li><span class="text-termPurple">>></span> Optimizando consultas a base de datos y flujos backend gestionados en <span class="text-white">Jira</span>, asegurando alto rendimiento y arquitectura limpia.</li>
                     </ul>
                 </div>
 
@@ -107,79 +144,394 @@
                     <div class="absolute -left-[31px] top-0 w-3 h-3 bg-termPurple rounded-full"></div>
                     <div class="text-white font-bold text-lg">GOBERNACIÓN DEL META <span class="text-termDim text-sm font-normal">| Backend Intern</span></div>
                     <div class="text-termDim text-xs mb-2">Nov 2025 - Present | Hybrid</div>
-                    <ul class="list-none space-y-1 text-gray-400 text-sm">
-                        <li><span class="text-termPurple">>></span> Architected "Sistema de Información de Emprendedores".</li>
-                        <li><span class="text-termPurple">>></span> Designed normalized <span class="text-white">PostgreSQL</span> schemas from scratch.</li>
-                        <li><span class="text-termPurple">>></span> Secured sensitive PII & financial metrics.</li>
+                    
+                    <ul class="lang-en list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Architecting the core logic of the "Entrepreneurs Information System" using <span class="text-white">Python (Django)</span> and <span class="text-white">PostgreSQL</span>.</li>
+                        <li><span class="text-termPurple">>></span> Designing normalized database schemas and secure REST APIs to handle sensitive PII and financial metrics for regional stakeholders.</li>
+                        <li><span class="text-termPurple">>></span> Standardizing local and staging environments using <span class="text-white">Docker Compose</span> to eliminate configuration drift.</li>
+                    </ul>
+                    <ul class="lang-es list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Arquitectando la lógica central del "Sistema de Información de Emprendedores" usando <span class="text-white">Python (Django)</span> y <span class="text-white">PostgreSQL</span>.</li>
+                        <li><span class="text-termPurple">>></span> Diseñando esquemas de base de datos normalizados y APIs REST seguras para manejar información sensible (PII) y métricas financieras.</li>
+                        <li><span class="text-termPurple">>></span> Estandarizando entornos locales y de pruebas usando <span class="text-white">Docker Compose</span> para eliminar errores de configuración.</li>
                     </ul>
                 </div>
 
                 <div class="relative">
                     <div class="absolute -left-[31px] top-0 w-3 h-3 bg-gray-600 rounded-full"></div>
-                    <div class="text-white font-bold text-lg">UNIVERSIDAD DE LOS LLANOS <span class="text-termDim text-sm font-normal">| Teaching Assistant</span></div>
+                    <div class="text-white font-bold text-lg">UNIVERSIDAD DE LOS LLANOS <span class="text-termDim text-sm font-normal text-termPurple">| <span class="lang-en">TA</span><span class="lang-es">Monitor</span></span></div>
                     <div class="text-termDim text-xs mb-2">Feb 2023 - July 2025</div>
-                    <ul class="list-none space-y-1 text-gray-400 text-sm">
-                        <li><span class="text-termPurple">>></span> Academic support in <span class="text-white">Linear Algebra</span> & <span class="text-white">Stochastic Processes</span>.</li>
-                        <li><span class="text-termPurple">>></span> Mentored 120+ students in mathematical foundations for AI.</li>
+                    
+                    <ul class="lang-en list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Delivered advanced mentorship in <span class="text-white">Stochastic Processes</span> and <span class="text-white">Linear Algebra</span> (Mathematical Foundations of AI).</li>
+                        <li><span class="text-termPurple">>></span> Optimized learning methodologies for 120+ Engineering students.</li>
+                    </ul>
+                    <ul class="lang-es list-none space-y-2 text-gray-400 text-sm">
+                        <li><span class="text-termPurple">>></span> Mentoría avanzada en <span class="text-white">Procesos Estocásticos</span> y <span class="text-white">Álgebra Lineal</span> (Fundamentos matemáticos de IA).</li>
+                        <li><span class="text-termPurple">>></span> Optimización de metodologías de aprendizaje para más de 120 estudiantes de Ingeniería.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <section id="projects" class="mb-16">
+            <div class="text-termPurple mb-4 font-bold">root@susoskymosquera:~/projects$ <span class="text-white">nano projects.py</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="border border-gray-800 bg-[#0a0a0a] p-5 hover:border-termGreen transition-colors group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-white font-bold text-lg group-hover:text-termGreen">FitLynx Gym SaaS</h3>
+                        <span class="text-xs bg-gray-900 text-termBlue px-2 py-1 rounded">Production</span>
+                    </div>
+                    <p class="lang-en text-gray-400 text-sm mb-4">Full-cycle management platform handling 1,500+ active records. Built with Django DRF and deployed via SSH/Nginx.</p>
+                    <p class="lang-es text-gray-400 text-sm mb-4">Plataforma de gestión integral manejando más de 1.500 registros activos. Construido con Django DRF y desplegado vía SSH/Nginx.</p>
+                    <div class="text-xs text-termDim font-mono">
+                        <span class="mr-2">#Django</span>
+                        <span class="mr-2">#PostgreSQL</span>
+                        <span class="mr-2">#Nginx</span>
+                    </div>
+                </div>
+
+                <div class="border border-gray-800 bg-[#0a0a0a] p-5 hover:border-termGreen transition-colors group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-white font-bold text-lg group-hover:text-termGreen">Theft Alert System</h3>
+                        <span class="text-xs bg-gray-900 text-termPurple px-2 py-1 rounded">Hackathon 2nd Place</span>
+                    </div>
+                    <p class="lang-en text-gray-400 text-sm mb-4">Real-time public safety backend. Integrates Folium for heatmaps and Telegram API for instant citizen alerts.</p>
+                    <p class="lang-es text-gray-400 text-sm mb-4">Backend de seguridad pública en tiempo real. Integra Folium para mapas de calor y API de Telegram para alertas ciudadanas.</p>
+                    <div class="text-xs text-termDim font-mono">
+                        <span class="mr-2">#GeoSpatial</span>
+                        <span class="mr-2">#TelegramAPI</span>
+                        <span class="mr-2">#Python</span>
+                    </div>
+                </div>
+
+                <div class="border border-gray-800 bg-[#0a0a0a] p-5 hover:border-termGreen transition-colors group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-white font-bold text-lg group-hover:text-termGreen">Deep Learning Sentiment</h3>
+                        <span class="text-xs bg-gray-900 text-gray-400 px-2 py-1 rounded">R&D</span>
+                    </div>
+                    <p class="lang-en text-gray-400 text-sm mb-4">NLP model using TensorFlow/Keras (LSTM/GRU) exposed via FastAPI for real-time text analysis.</p>
+                    <p class="lang-es text-gray-400 text-sm mb-4">Modelo NLP usando TensorFlow/Keras (LSTM/GRU) expuesto vía FastAPI para análisis de texto en tiempo real.</p>
+                    <div class="text-xs text-termDim font-mono">
+                        <span class="mr-2">#TensorFlow</span>
+                        <span class="mr-2">#FastAPI</span>
+                        <span class="mr-2">#AI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certs" class="mb-16">
+            <div class="text-termPurple mb-4 font-bold">root@susoskymosquera:~/certs$ <span class="text-white">cat licenses.pem</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border border-gray-800 bg-[#0a0a0a] p-4 font-mono text-xs text-gray-400 group hover:border-termGreen transition-colors">
+                    <div class="text-termGreen mb-2 font-bold">-----BEGIN CERTIFICATE-----</div>
+                    <div class="mb-2 text-white font-bold text-sm">Automations with N8N & AI</div>
+                    <div class="space-y-1 text-termDim">
+                        <div>ISSUER: Raiola Networks</div>
+                        <div>DATE: Jan 2026</div>
+                        <div>ID: N8N-AUTO-AI-V1</div>
+                    </div>
+                    <div class="mt-3 break-all opacity-50 text-[10px]">
+                        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+                    </div>
+                    <div class="text-termGreen mt-2 font-bold">-----END CERTIFICATE-----</div>
+                </div>
+                <div class="border border-gray-800 bg-[#0a0a0a] p-4 font-mono text-xs text-gray-400 group hover:border-termGreen transition-colors">
+                    <div class="text-termGreen mb-2 font-bold">-----BEGIN CERTIFICATE-----</div>
+                    <div class="mb-2 text-white font-bold text-sm">Artificial Intelligence Bootcamp</div>
+                    <div class="space-y-1 text-termDim">
+                        <div>ISSUER: CUN Corporation</div>
+                        <div>DATE: Oct 2025</div>
+                        <div>ID: AI-BOOTCAMP-CUN</div>
+                    </div>
+                    <div class="mt-3 break-all opacity-50 text-[10px]">
+                        7f8a9d1c2b3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9...
+                    </div>
+                    <div class="text-termGreen mt-2 font-bold">-----END CERTIFICATE-----</div>
+                </div>
+            </div>
+        </section>
+
         <section id="skills" class="mb-16">
-            <div class="text-termPurple mb-2 font-bold">root@susosky:~/skills$ <span class="text-white">cat stack.yml</span></div>
+            <div class="text-termPurple mb-2 font-bold">root@susoskymosquera:~/skills$ <span class="text-white">cat stack.yml</span></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-[#0f0f0f] p-4 border border-gray-800">
                     <h3 class="text-white border-b border-gray-700 pb-2 mb-2">Backend_Core:</h3>
                     <ul class="text-sm text-gray-400 space-y-1">
-                        <li>- Python (Django, FastAPI)</li>
-                        <li>- PostgreSQL (Complex Queries)</li>
-                        <li>- REST API Design</li>
-                        <li>- Clean Architecture</li>
+                        <li>- Python 3.11 (Django, FastAPI)</li>
+                        <li>- PostgreSQL (Optimization/Design)</li>
+                        <li>- REST API Architecture</li>
+                        <li>- Security (JWT, OAuth2)</li>
                     </ul>
                 </div>
                 <div class="bg-[#0f0f0f] p-4 border border-gray-800">
                     <h3 class="text-white border-b border-gray-700 pb-2 mb-2">DevOps_Infra:</h3>
                     <ul class="text-sm text-gray-400 space-y-1">
-                        <li>- Docker & Compose</li>
-                        <li>- Jenkins (CI/CD)</li>
-                        <li>- Linux Administration</li>
-                        <li>- Nginx & SSH</li>
+                        <li>- Docker & Docker Compose</li>
+                        <li>- Jenkins CI/CD Pipelines</li>
+                        <li>- Linux Server Admin (Bash)</li>
+                        <li>- Nginx Reverse Proxy</li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <section id="contact" class="mb-12">
-            <div class="text-termPurple mb-4 font-bold">root@susosky:~$ <span class="text-white">./contact_me.sh</span></div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="text-termPurple mb-4 font-bold">root@susoskymosquera:~$ <span class="text-white">./contact_me.sh</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <a href="mailto:juan.gonzalez.mosquera@unillanos.edu.co" class="group block border border-gray-800 p-6 hover:border-termGreen transition-colors bg-[#0a0a0a]">
                     <div class="text-xs text-termDim mb-1">Method: SMTP</div>
-                    <div class="text-white font-bold group-hover:text-termGreen break-words">juan.gonzalez.mosquera@unillanos.edu.co</div>
+                    <div class="text-white font-bold group-hover:text-termGreen break-words truncate">juan.gonzalez...</div>
                 </a>
-
+                
                 <a href="https://www.linkedin.com/in/susosky/" target="_blank" class="group block border border-gray-800 p-6 hover:border-blue-500 transition-colors bg-[#0a0a0a]">
                     <div class="text-xs text-termDim mb-1">Method: HTTP/GET</div>
-                    <div class="text-white font-bold group-hover:text-blue-500">linkedin.com/in/susosky</div>
+                    <div class="text-white font-bold group-hover:text-blue-500">linkedin/susosky</div>
+                </a>
+
+                <a href="https://github.com/susoskyMosquera" target="_blank" class="group block border border-gray-800 p-6 hover:border-termPurple transition-colors bg-[#0a0a0a]">
+                    <div class="text-xs text-termDim mb-1">Method: GIT/CLONE</div>
+                    <div class="text-white font-bold group-hover:text-termPurple">github/susoskyMosquera</div>
                 </a>
             </div>
         </section>
 
-        <footer class="border-t border-gray-800 pt-6 flex justify-between text-xs text-termDim">
-            <div>
-                <span class="text-green-900">●</span> System Online
+        <section class="mb-12 border-t border-gray-800 pt-6">
+            <div class="text-xs text-termDim mb-2"># VISITOR TERMINAL (Interactive)</div>
+            <div id="terminal-output" class="text-gray-400 text-sm font-mono space-y-1 mb-2">
+                <div class="lang-en">Type 'help' to see available commands.</div>
+                <div class="lang-es">Escribe 'ayuda' para ver los comandos.</div>
             </div>
-            <div>
-                Built with <span class="text-gray-500">&lt;HTML/&gt;</span> & <span class="text-gray-500">Tailwind</span>
+            <div class="flex items-center gap-2 text-sm font-mono">
+                <span class="text-termPurple font-bold">visitor@susoskymosquera:~$</span>
+                <input type="text" id="cli-input" class="bg-transparent border-none outline-none text-white w-full focus:ring-0" autocomplete="off">
+            </div>
+        </section>
+
+        <footer class="border-t border-gray-800 pt-6 mt-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div>
+                    <span class="text-green-900 animate-pulse">●</span> System Online | Uptime: <span id="uptime">0</span>s
+                </div>
+                <div class="bg-[#080808] p-3 border border-gray-800 h-24 overflow-hidden relative">
+                    <div class="absolute top-1 right-2 text-[10px] text-gray-500">LIVE_TRAFFIC_LOG</div>
+                    <div id="traffic-logs" class="space-y-1 text-gray-500"></div>
+                </div>
             </div>
         </footer>
 
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("System initialized.");
+        // --- LANGUAGE SWITCHER LOGIC ---
+        const langBtn = document.getElementById('lang-btn');
+        const bodyEl = document.body;
+        let isSpanish = false;
+
+        langBtn.addEventListener('click', () => {
+            isSpanish = !isSpanish;
+            if (isSpanish) {
+                bodyEl.classList.add('spanish-mode');
+                langBtn.innerHTML = '[ EN / <span class="text-termGreen font-bold">ES</span> ]';
+                updateTypewriterText();
+            } else {
+                bodyEl.classList.remove('spanish-mode');
+                langBtn.innerHTML = '[ <span class="text-termGreen font-bold">EN</span> / ES ]';
+                updateTypewriterText();
+            }
+        });
+
+        // --- BOOT SEQUENCE ---
+        const bootScreen = document.getElementById('boot-screen');
+        const bootLogsContainer = document.getElementById('boot-logs');
+        const mainUi = document.getElementById('main-ui');
+
+        const bootMessages = [
+            "[ OK ] Loaded kernel module: python_runtime_v3.11",
+            "[ OK ] Mounted filesystem: /dev/nvme0n1p1 (Portfolio_DB)",
+            "[ INFO ] Starting network manager...",
+            "[ OK ] Network manager started.",
+            "[ INFO ] Connecting to PostgreSQL cluster...",
+            "[ OK ] Connection established (Latency: 12ms)",
+            "[ OK ] Started service: Docker Daemon",
+            "[ OK ] Started service: Nginx Reverse Proxy",
+            "[ INFO ] Initializing CI/CD pipelines...",
+            "[ OK ] Jenkins agent connected.",
+            "[ DONE ] System initialization complete."
+        ];
+
+        let delay = 0;
+        bootMessages.forEach((msg) => {
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.innerHTML = msg.replace('[ OK ]', '<span class="text-green-500">[ OK ]</span>')
+                                 .replace('[ INFO ]', '<span class="text-blue-500">[ INFO ]</span>')
+                                 .replace('[ DONE ]', '<span class="text-termPurple">[ DONE ]</span>');
+                bootLogsContainer.appendChild(p);
+                window.scrollTo(0, document.body.scrollHeight);
+            }, delay);
+            delay += Math.floor(Math.random() * 200) + 100;
+        });
+
+        setTimeout(() => {
+            bootScreen.style.opacity = '0';
+            setTimeout(() => {
+                bootScreen.remove();
+                document.body.classList.remove('booting');
+                mainUi.classList.remove('opacity-0');
+                startTyping();
+                startLiveLogs();
+                document.getElementById('cli-input').focus();
+            }, 500);
+        }, delay + 500);
+
+        // --- TYPING EFFECT ---
+        let typewriterTimeout;
+        const typeElement = document.getElementById('typewriter-command');
+        
+        function updateTypewriterText() {
+            clearTimeout(typewriterTimeout);
+            typeElement.innerHTML = '';
+            startTyping();
+        }
+
+        function startTyping() {
+            const text = isSpanish ? "./mostrar_perfil.sh --verbose" : "./display_profile.sh --verbose";
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    typeElement.innerHTML += text.charAt(i);
+                    i++;
+                    typewriterTimeout = setTimeout(type, 50 + Math.random() * 50);
+                }
+            }
+            type();
+        }
+
+        // --- LIVE TRAFFIC SIMULATOR ---
+        function startLiveLogs() {
+            const logContainer = document.getElementById('traffic-logs');
+            const endpoints = ['/api/v1/auth', '/api/v1/users', '/healthcheck', '/static/css/main.css', '/db/query'];
+            const methods = ['GET', 'POST', 'POST', 'GET', 'PUT'];
+            const status = ['200 OK', '201 Created', '200 OK', '304 Not Modified'];
+
+            setInterval(() => {
+                const ip = `192.168.1.${Math.floor(Math.random() * 255)}`;
+                const end = endpoints[Math.floor(Math.random() * endpoints.length)];
+                const met = methods[Math.floor(Math.random() * methods.length)];
+                const stat = status[Math.floor(Math.random() * status.length)];
+                
+                const line = document.createElement('div');
+                line.className = 'text-[10px] whitespace-nowrap';
+                line.innerHTML = `<span class="text-termDim">${new Date().toISOString().split('T')[1].split('.')[0]}</span> <span class="text-blue-400">${ip}</span> - ${met} ${end} <span class="text-green-500">${stat}</span>`;
+                
+                logContainer.prepend(line);
+                if (logContainer.children.length > 5) logContainer.lastChild.remove();
+            }, 2000);
+
+            let sec = 0;
+            setInterval(() => { document.getElementById('uptime').innerText = sec++; }, 1000);
+        }
+
+        // --- INTERACTIVE TERMINAL ---
+        const input = document.getElementById('cli-input');
+        const output = document.getElementById('terminal-output');
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.trim().toLowerCase();
+                this.value = '';
+                output.innerHTML += `<div class="text-gray-500">visitor@susoskymosquera:~$ ${cmd}</div>`;
+
+                let response = "";
+                
+                // EASTER EGG
+                if (cmd === 'rm -rf /' || cmd === 'rm -rf *') {
+                    output.innerHTML += `<div class="text-red-500 font-bold animate-pulse">CRITICAL ERROR: DELETING SYSTEM32... JUST KIDDING. DON'T DO THAT.</div>`;
+                    window.scrollTo(0, document.body.scrollHeight);
+                    return;
+                }
+
+                // SPANISH LOGIC
+                if (isSpanish) {
+                    switch(cmd) {
+                        case 'ayuda':
+                        case 'help':
+                            response = "Comandos disponibles: <span class='text-termGreen'>perfil, skills, proyectos, certs, email, borrar, fecha, sudo</span>";
+                            break;
+                        case 'perfil':
+                        case 'about':
+                            response = "Ingeniero Backend apasionado por la escalabilidad, seguridad y código limpio.";
+                            break;
+                        case 'skills':
+                            response = "Python (Django/FastAPI), Docker, Jenkins, Linux, PostgreSQL.";
+                            break;
+                        case 'proyectos':
+                        case 'projects':
+                             response = "Cargando módulo... FitLynx (Prod), TheftAlert (Hackathon), AI Sentiment.";
+                             break;
+                        case 'certs':
+                            response = "Listando certificados: N8N Automation, AI Bootcamp (CUN).";
+                            break;
+                        case 'email':
+                            response = "Abriendo cliente de correo...";
+                            setTimeout(() => window.location.href = "mailto:juan.gonzalez.mosquera@unillanos.edu.co", 1000);
+                            break;
+                        case 'fecha':
+                        case 'date':
+                            response = new Date().toString();
+                            break;
+                        case 'borrar':
+                        case 'clear':
+                            output.innerHTML = '';
+                            return;
+                        case 'sudo':
+                            response = "<span class='text-termRed'>Permiso denegado: el usuario 'visitor' no está en el archivo sudoers. Este incidente será reportado.</span>";
+                            break;
+                        default:
+                            response = `<span class='text-termRed'>Comando no encontrado: ${cmd}</span>. Escribe 'ayuda'.`;
+                    }
+                } 
+                // ENGLISH LOGIC
+                else {
+                    switch(cmd) {
+                        case 'help':
+                            response = "Available commands: <span class='text-termGreen'>about, skills, projects, certs, email, clear, date, sudo</span>";
+                            break;
+                        case 'about':
+                            response = "Backend Engineer passionate about scalability, security and clean code.";
+                            break;
+                        case 'skills':
+                            response = "Python (Django/FastAPI), Docker, Jenkins, Linux, PostgreSQL.";
+                            break;
+                        case 'projects':
+                             response = "Loading projects module... FitLynx (Prod), TheftAlert (Hackathon), AI Sentiment.";
+                             break;
+                        case 'certs':
+                            response = "Listing certificates: N8N Automation, AI Bootcamp (CUN).";
+                            break;
+                        case 'email':
+                            response = "Opening mail client...";
+                            setTimeout(() => window.location.href = "mailto:juan.gonzalez.mosquera@unillanos.edu.co", 1000);
+                            break;
+                        case 'date':
+                            response = new Date().toString();
+                            break;
+                        case 'clear':
+                            output.innerHTML = '';
+                            return;
+                        case 'sudo':
+                            response = "<span class='text-termRed'>Permission denied: user 'visitor' is not in the sudoers file. This incident will be reported.</span>";
+                            break;
+                        default:
+                            response = `<span class='text-termRed'>Command not found: ${cmd}</span>. Type 'help'.`;
+                    }
+                }
+                output.innerHTML += `<div class="mb-2">${response}</div>`;
+                window.scrollTo(0, document.body.scrollHeight);
+            }
         });
     </script>
 </body>
